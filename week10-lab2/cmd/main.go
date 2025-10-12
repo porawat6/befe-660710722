@@ -1,7 +1,7 @@
 package main
 
 import (
-	 _ "week10-lab2/docs" // ให้ Swag สร้างเอกสารใน Folder docs โดยอัตโนมัติ
+	_ "week10-lab2/docs" // ให้ Swag สร้างเอกสารใน Folder docs โดยอัตโนมัติ
 
 	"week10-lab2/internal/handler"
 
@@ -26,8 +26,7 @@ func main() {
 	// User API routes
 	api := r.Group("/api/v1")
 	{
-		api.GET("/books/:id", handler.GetBookByID) // ใช้ Handler จากไฟล์ user_handler.go
-		api.GET("/books/:id", handler.GetBookByID)
+		api.GET("/books/:id", handler.GetBookByID) // ใช้ Handler จากไฟล์ book_handler.go
 	}
 
 	// Start server

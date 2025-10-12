@@ -24,7 +24,7 @@ definitions:
       message:
         type: string
     type: object
-host: 127.0.0.1:8080
+host: localhost:8080
 info:
   contact: {}
   description: This is a simple example of using Gin with Swagger.
@@ -33,7 +33,7 @@ info:
 paths:
   /books:
     get:
-      description: Get details of a book by ID
+      description: Get details of a books
       produces:
       - application/json
       responses:
@@ -48,11 +48,12 @@ paths:
       summary: Get all book
       tags:
       - Books
-  /books/:
     post:
-      description: post new book
+      consumes:
+      - application/json
+      description: Add a new book record to the database
       parameters:
-      - description: Book JSON
+      - description: Book data
         in: body
         name: book
         required: true
@@ -61,20 +62,24 @@ paths:
       produces:
       - application/json
       responses:
-        "200":
-          description: OK
+        "201":
+          description: Created
           schema:
             $ref: '#/definitions/main.Book'
-        "404":
-          description: Not Found
+        "400":
+          description: Bad Request
           schema:
             $ref: '#/definitions/main.ErrorResponse'
-      summary: Post book
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/main.ErrorResponse'
+      summary: Create a new book
       tags:
       - Books
   /books/{id}:
     delete:
-      description: Delete details of a book by ID
+      description: Delete a book record from the database by its ID
       parameters:
       - description: Book ID
         in: path
@@ -87,16 +92,22 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/main.Book'
+            additionalProperties:
+              type: string
+            type: object
         "404":
           description: Not Found
+          schema:
+            $ref: '#/definitions/main.ErrorResponse'
+        "500":
+          description: Internal Server Error
           schema:
             $ref: '#/definitions/main.ErrorResponse'
       summary: Delete book by ID
       tags:
       - Books
     get:
-      description: Get details of a book by ID
+      description: Get details of a book by its ID
       parameters:
       - description: Book ID
         in: path
@@ -114,18 +125,24 @@ paths:
           description: Not Found
           schema:
             $ref: '#/definitions/main.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/main.ErrorResponse'
       summary: Get book by ID
       tags:
       - Books
     put:
-      description: update details of a book by ID
+      consumes:
+      - application/json
+      description: Update existing book details by its ID
       parameters:
       - description: Book ID
         in: path
         name: id
         required: true
         type: integer
-      - description: Book JSON
+      - description: Updated book data
         in: body
         name: book
         required: true
@@ -138,11 +155,19 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/main.Book'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/main.ErrorResponse'
         "404":
           description: Not Found
           schema:
             $ref: '#/definitions/main.ErrorResponse'
-      summary: update book by ID
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/main.ErrorResponse'
+      summary: Update book by ID
       tags:
       - Books
 swagger: "2.0"

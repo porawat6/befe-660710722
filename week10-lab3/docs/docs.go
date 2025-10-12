@@ -17,7 +17,7 @@ const docTemplate = `{
     "paths": {
         "/books": {
             "get": {
-                "description": "Get details of a book by ID",
+                "description": "Get details of a books",
                 "produces": [
                     "application/json"
                 ],
@@ -39,21 +39,22 @@ const docTemplate = `{
                         }
                     }
                 }
-            }
-        },
-        "/books/": {
+            },
             "post": {
-                "description": "post new book",
+                "description": "Add a new book record to the database",
+                "consumes": [
+                    "application/json"
+                ],
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
                     "Books"
                 ],
-                "summary": "Post book",
+                "summary": "Create a new book",
                 "parameters": [
                     {
-                        "description": "Book JSON",
+                        "description": "Book data",
                         "name": "book",
                         "in": "body",
                         "required": true,
@@ -63,14 +64,20 @@ const docTemplate = `{
                     }
                 ],
                 "responses": {
-                    "200": {
-                        "description": "OK",
+                    "201": {
+                        "description": "Created",
                         "schema": {
                             "$ref": "#/definitions/main.Book"
                         }
                     },
-                    "404": {
-                        "description": "Not Found",
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/main.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
                         "schema": {
                             "$ref": "#/definitions/main.ErrorResponse"
                         }
@@ -80,7 +87,7 @@ const docTemplate = `{
         },
         "/books/{id}": {
             "get": {
-                "description": "Get details of a book by ID",
+                "description": "Get details of a book by its ID",
                 "produces": [
                     "application/json"
                 ],
@@ -109,18 +116,27 @@ const docTemplate = `{
                         "schema": {
                             "$ref": "#/definitions/main.ErrorResponse"
                         }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/main.ErrorResponse"
+                        }
                     }
                 }
             },
             "put": {
-                "description": "update details of a book by ID",
+                "description": "Update existing book details by its ID",
+                "consumes": [
+                    "application/json"
+                ],
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
                     "Books"
                 ],
-                "summary": "update book by ID",
+                "summary": "Update book by ID",
                 "parameters": [
                     {
                         "type": "integer",
@@ -130,7 +146,7 @@ const docTemplate = `{
                         "required": true
                     },
                     {
-                        "description": "Book JSON",
+                        "description": "Updated book data",
                         "name": "book",
                         "in": "body",
                         "required": true,
@@ -146,8 +162,20 @@ const docTemplate = `{
                             "$ref": "#/definitions/main.Book"
                         }
                     },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/main.ErrorResponse"
+                        }
+                    },
                     "404": {
                         "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/main.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
                         "schema": {
                             "$ref": "#/definitions/main.ErrorResponse"
                         }
@@ -155,7 +183,7 @@ const docTemplate = `{
                 }
             },
             "delete": {
-                "description": "Delete details of a book by ID",
+                "description": "Delete a book record from the database by its ID",
                 "produces": [
                     "application/json"
                 ],
@@ -176,11 +204,20 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/main.Book"
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
                         }
                     },
                     "404": {
                         "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/main.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
                         "schema": {
                             "$ref": "#/definitions/main.ErrorResponse"
                         }
@@ -233,7 +270,7 @@ const docTemplate = `{
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
-	Host:             "127.0.0.1:8080",
+	Host:             "localhost:8080",
 	BasePath:         "/api/v1",
 	Schemes:          []string{},
 	Title:            "Simple API Example",
