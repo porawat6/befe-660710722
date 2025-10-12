@@ -135,8 +135,8 @@ func getNewBook(c *gin.Context) {
 	 c.JSON(http.StatusOK, books)
  }
 
-// @Summary Get book by ID
-// @Description Get details of a book by its ID
+// @Summary Get Book by ID
+// @Description Get details of a Book by its ID
 // @Tags Books
 // @Produce  json
 // @Param   id   path   int  true  "Book ID"
